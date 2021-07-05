@@ -1,4 +1,5 @@
 ### Taller 3 
+
 ## Ingreso de datos
 datos <- read.csv("/Users/user/Desktop/lastfm.csv",sep=";", header=TRUE)
 
@@ -8,12 +9,15 @@ install.packages("arulesViz")
 
 library(arules)
 library(arulesViz)
+library(tidyverse)
 
-## Análisis base 
+## ANÁLISIS BASE 
+
+##Visualización 6 primeros por defecto
+head(datos)
 
 ## Resumen estadístico
 summary(datos)
-
 
 ## Cantidad de bandas 
 length(unique(datos$artist))
@@ -27,6 +31,23 @@ length(unique(datos$size))
 ##cantidad de sub categorias de artistas
 length(unique(datos$artist_id))
 
+## Gráficas en base al tamaño 
+mean(datos$size)
+range(datos$size)
+hist(x=datos$size)
+
+## Creación de la tabla de los 10 superiores 
+
+datos %>%
+  count(artist) %>%
+  arrange(desc(n)) %>%
+  top_n(10)
+
+## 
+plot(datos$artist, method = "paracoord")
+plot(datos$artist, method = "graph")
+
+#######PROFESOR ·###################
 
 # Generamos la lista de transacciones a utilizar
 write.table(datos, file = tmp <- file(), row.names = FALSE)
@@ -50,7 +71,7 @@ resultados2 <- apriori(listas,
 # Analizamos los resultados
 summary(resultados2)
 inspect(resultados2)
-head(resultados2)
+
 # Algunas representaciones graficas
 plot(resultados2, method = "paracoord")
 plot(resultados2, method = "graph")
