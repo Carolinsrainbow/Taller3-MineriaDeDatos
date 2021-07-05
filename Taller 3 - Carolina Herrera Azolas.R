@@ -47,7 +47,7 @@ datos %>%
 plot(datos$artist, method = "paracoord")
 plot(datos$artist, method = "graph")
 
-#######PROFESOR ·###################
+
 
 # Generamos la lista de transacciones a utilizar
 write.table(datos, file = tmp <- file(), row.names = FALSE)
