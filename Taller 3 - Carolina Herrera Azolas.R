@@ -43,13 +43,14 @@ datos %>%
   arrange(desc(n)) %>%
   top_n(10)
 
-## 
+## Base en las asociaciones 
 plot(datos$artist, method = "paracoord")
 plot(datos$artist, method = "graph")
 
 
 
 # Generamos la lista de transacciones a utilizar
+
 write.table(datos, file = tmp <- file(), row.names = FALSE)
 listas <- read.transactions(tmp,
                             format = "single",
@@ -57,8 +58,6 @@ listas <- read.transactions(tmp,
                             cols = c("user", "artist"))
 close(tmp)
 summary(listas)
-
-# Recomendacion: no utilizar el comando image(listas) pues son demasiadas
 
 resultados2 <- apriori(listas,
                        parameter = list(supp = 0.01,
@@ -78,12 +77,15 @@ plot(resultados2, method = "graph")
 
 
 # Analisis ordenado por criterios
+
+## Ordenado por criterio Confianza
 reglas_conf <- sort(resultados2,
                     by = "confidence",
                     decreasing = TRUE)
 inspect(head(reglas_conf))
+plot(reglas_conf, method = "paracoord")
 
-
+## Ordenado por criterio Lift 
 reglas_lift <- sort (resultados2,
                      by = "lift",
                      decreasing=TRUE)
